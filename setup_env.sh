@@ -11,16 +11,13 @@ sudo apt-get install dotnet-sdk-2.0.0 -y
 echo "###Installing Git"
 sudo apt-get install git -y
 
-echo "###Installing Git"
-sudo apt-get install git -y
-
 echo "###Cloning the sample"
-cd /home/george
+cd /home/$USER
 git clone https://github.com/georgewallace/azure-storage-throughput-test
-cd azuredeploytest
+cd azure-storage-throughput-test
 
 echo "###Inject the account name and key"
-sed -i '/string connectionString/c\string connectionString = "DefaultEndpointsProtocol=http;AccountName='$2';AccountKey='$3'";' Program.cs
+sed -i '/string connectionString/c\string connectionString = "DefaultEndpointsProtocol=http;AccountName='$1';AccountKey='$2'";' Program.cs
 	
 chown -R george .
 chmod -R 755 .
