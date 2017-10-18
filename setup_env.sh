@@ -2,21 +2,27 @@
 
 echo "###Installing .NET Core"
 
-sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ yakkety main" > /etc/apt/sources.list.d/dotnetdev.list'
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
 sudo apt-get update
+sudo apt-get install dotnet-sdk-2.0.0 -y
 
-sudo apt-get install dotnet-dev-1.0.1 -y
+echo "###Installing Git"
+sudo apt-get install git -y
+
+echo "###Installing Git"
+sudo apt-get install git -y
 
 echo "###Cloning the sample"
-cd /home/$1
+cd /home/george
 git clone https://github.com/georgewallace/azure-storage-throughput-test
 cd azuredeploytest
 
 echo "###Inject the account name and key"
 sed -i '/string connectionString/c\string connectionString = "DefaultEndpointsProtocol=http;AccountName='$2';AccountKey='$3'";' Program.cs
 	
-chown -R $1 .
+chown -R george .
 chmod -R 755 .
 
 echo "###Restoring the nuget packages and building"
